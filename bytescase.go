@@ -4,29 +4,31 @@
 // that can be found in the LICENSE file in the root of the source
 // tree.
 
+// Package bytescase implements ascii case insensitive matching and case
+// conversion.
 package bytescase
 
 type ErrorConv int32
 
-// possible returned errors
+// Error ids used when returning errors.
 const (
 	NoErr ErrorConv = iota
 	ErrDstNoSpc
 	ErrLast
 )
 
-// conversion from error id to string
+// ErrStr is an array that maps error ids to error strings.
 var ErrStr [ErrLast]string = [...]string{
 	"no error",
 	"not enough space in dst",
 }
 
-// implement the error interface
+// Error() implements the error interface.
 func (e ErrorConv) Error() string {
 	return ErrStr[e]
 }
 
-// converts one byte to lower case
+// ByteToLower converts one byte to ascii lower case.
 func ByteToLower(b byte) byte {
 	var m uint32
 	/*  if b is upper case => b | 0x20 will be the lower case
@@ -41,7 +43,7 @@ func ByteToLower(b byte) byte {
 	//return b ^ byte(m)
 }
 
-// converts one byte to lower case
+// ByteToUpper converts one byte to upper case.
 func ByteToUpper(b byte) byte {
 	var m uint32
 	/*  if b is lower case => b & ^0x20 will be the upper case
@@ -54,7 +56,7 @@ func ByteToUpper(b byte) byte {
 	return b & ^byte(m)
 }
 
-// Converts src to lower case and write it in dst.
+// ToLower converts src to lower case and writes it in dst.
 // Returns error !=nill if not enough space in dst.
 func ToLower(src, dst []byte) error {
 	if len(dst) < len(src) {
@@ -75,7 +77,7 @@ func ToLower(src, dst []byte) error {
 	return nil
 }
 
-// Compares 2 byte slices for equality in case insensitive mode
+// CmpEq compares 2 byte slices for equality in case insensitive mode.
 func CmpEq(s1, s2 []byte) bool {
 	if len(s1) != len(s2) {
 		return false
@@ -104,11 +106,12 @@ func CmpEq(s1, s2 []byte) bool {
 	return true
 }
 
-// Checks if s starts with prefix in case insensitive mode.
+// Prefix checks if s starts with prefix in case insensitive mode.
 // Returns an index in s[] pointing after the matched prefix + true on success
 // (e.g. len(prefix), true) or an index to the first non-matching
 // character in s and false (e.g.: n, false) if the prefix is not fully
 // contained in s.
+//
 // If s==prefix the returned index will be len(s) and if prefix == [] the
 // index will be 0. If prefix is longer then s the return will be 0, false.
 func Prefix(prefix, s []byte) (int, bool) {
