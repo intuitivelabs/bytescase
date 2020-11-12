@@ -8,6 +8,8 @@
 // conversion.
 package bytescase
 
+// ErrorConv is the type used for returning errors.
+// It implements the Error interface.
 type ErrorConv int32
 
 // Error ids used when returning errors.
@@ -18,7 +20,7 @@ const (
 )
 
 // ErrStr is an array that maps error ids to error strings.
-var ErrStr [ErrLast]string = [...]string{
+var ErrStr = [ErrLast]string{
 	"no error",
 	"not enough space in dst",
 }

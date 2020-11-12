@@ -54,7 +54,7 @@ func TestMain(m *testing.M) {
 }
 
 func genRandStr(len int, minchr, maxchr byte) []byte {
-	var b []byte = make([]byte, len)
+	var b = make([]byte, len)
 
 	for i := 0; i < len; i++ {
 		b[i] = byte(rand.Intn(int(maxchr)-int(minchr)+1)) + minchr
@@ -65,8 +65,8 @@ func genRandStr(len int, minchr, maxchr byte) []byte {
 // generate 2 random strings of the same lenght with
 // random case differences
 func gen2RandCaseStr(len int, minchr, maxchr byte) ([]byte, []byte) {
-	var b1 []byte = make([]byte, len)
-	var b2 []byte = make([]byte, len)
+	var b1 = make([]byte, len)
+	var b2 = make([]byte, len)
 
 	for i := 0; i < len; i++ {
 		b1[i] = byte(rand.Intn(int(maxchr)-int(minchr)+1)) + minchr
@@ -128,13 +128,13 @@ func testToLowerFixed(t *testing.T) {
 }
 
 func testToLowerStr(t *testing.T, src []byte) {
-	var res []byte = make([]byte, len(src))
+	var res = make([]byte, len(src))
 
 	err := ToLower(src[:], res[:])
 	if err != nil {
 		t.Fatalf("ToLower(%+q) error %s", string(src), err)
 	}
-	var res2 []byte = make([]byte, len(src))
+	var res2 = make([]byte, len(src))
 	err = tToLower(src[:], res2[:])
 	if err != nil {
 		t.Fatalf("internal tToLower(%+q) error %s", string(src), err)
@@ -174,7 +174,7 @@ func benchmarkToLowerRandInit(b *testing.B) [][]byte {
 		maxStrs = 1
 	}
 	log.Printf("	generating %d random string(s)...(%d)\n", maxStrs, b.N)
-	var s [][]byte = make([][]byte, maxStrs)
+	var s = make([][]byte, maxStrs)
 	for n := 0; n < maxStrs; n++ {
 		s[n] = genRandStr(int(cfgStrMaxLen), byte(cfgMinChr), byte(cfgMaxChr))
 	}
@@ -184,7 +184,7 @@ func benchmarkToLowerRandInit(b *testing.B) [][]byte {
 func benchmarkToLowerRand(b *testing.B, tolower func(s, d []byte) error, s [][]byte, tmp []byte) {
 	b.ResetTimer()
 	cnt := 0
-	var err bool = false
+	var err = false
 	var r, i int
 	for r = 0; r < b.N/len(s); r++ {
 		for i := 0; i < len(s); i++ {
@@ -203,7 +203,7 @@ func benchmarkToLowerRand(b *testing.B, tolower func(s, d []byte) error, s [][]b
 func BenchmarkToLowerRand(b *testing.B) {
 	log.Printf("benchmark starting...\n")
 	s := benchmarkToLowerRandInit(b)
-	var tmp []byte = make([]byte, cfgStrMaxLen)
+	var tmp = make([]byte, cfgStrMaxLen)
 	b.Run("bytescase.ToLower",
 		func(b *testing.B) { benchmarkToLowerRand(b, ToLower, s, tmp) })
 	b.Run("classic toLower",
